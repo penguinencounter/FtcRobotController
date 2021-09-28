@@ -54,17 +54,11 @@ import com.qualcomm.robotcore.util.Range;
 public class MechanumWheelTest extends LinearOpMode {
 
     // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor rearLeft = null;
-    private DcMotor rearRight = null;
-    private DcMotor frontLeft = null;
-    private DcMotor frontRight = null;
-    private AndroidTextToSpeech tts;
-    private MechanumWheelDriveAPI driveAPI;
+    private final ElapsedTime runtime = new ElapsedTime();
 
     @Override
     public void runOpMode() {
-        tts = new AndroidTextToSpeech();
+        AndroidTextToSpeech tts = new AndroidTextToSpeech();
         tts.initialize();
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -72,10 +66,10 @@ public class MechanumWheelTest extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        rearLeft = hardwareMap.get(DcMotor.class, "rear_left");
-        rearRight = hardwareMap.get(DcMotor.class, "rear_right");
-        frontLeft = hardwareMap.get(DcMotor.class, "front_left");
-        frontRight = hardwareMap.get(DcMotor.class, "front_right");
+        DcMotor rearLeft = hardwareMap.get(DcMotor.class, "rear_left");
+        DcMotor rearRight = hardwareMap.get(DcMotor.class, "rear_right");
+        DcMotor frontLeft = hardwareMap.get(DcMotor.class, "front_left");
+        DcMotor frontRight = hardwareMap.get(DcMotor.class, "front_right");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -84,7 +78,7 @@ public class MechanumWheelTest extends LinearOpMode {
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         rearLeft.setDirection(DcMotor.Direction.REVERSE);
 
-        driveAPI = new MechanumWheelDriveAPI(rearLeft, rearRight, frontLeft, frontRight);
+        MechanumWheelDriveAPI driveAPI = new MechanumWheelDriveAPI(rearLeft, rearRight, frontLeft, frontRight);
 
         // Wait for the game to start (driver presses PLAY)
         tts.speak("Ready");
@@ -99,18 +93,13 @@ public class MechanumWheelTest extends LinearOpMode {
             double leftX = gamepad1.left_stick_x * 1.1;
             double rightX = gamepad1.right_stick_x;
 
-            double[] output = driveAPI.convertInputsToPowers(leftX, leftY, rightX);
-
-            // Send calculated power to wheels
-            rearLeft.setPower(output[0]);
-            frontLeft.setPower(output[1]);
-            rearRight.setPower(output[2]);
-            frontRight.setPower(output[3]);
+            double[] output = driveAPI.runMotorsFromStick(leftX, leftY, rightX);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Running");
             telemetry.addData("Speeds", "rearLeft (%.2f) rearRight (%.2f) frontLeft (%.2f) frontRight (%.2f)", output[0], output[1], output[2], output[3]);
             telemetry.update();
         }
+        driveAPI.stopAll();
     }
 }
