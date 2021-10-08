@@ -32,10 +32,13 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.robotcore.external.android.AndroidTextToSpeech;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -55,11 +58,14 @@ public class MechanumWheelTest extends LinearOpMode {
 
     // Declare OpMode members.
     private final ElapsedTime runtime = new ElapsedTime();
+    private BNO055IMU imu;
 
     @Override
     public void runOpMode() {
         AndroidTextToSpeech tts = new AndroidTextToSpeech();
         tts.initialize();
+        BNO055IMU.Parameters imuparams = new BNO055IMU.Parameters();
+        imu.initialize(imuparams);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
@@ -87,7 +93,7 @@ public class MechanumWheelTest extends LinearOpMode {
         tts.speak("Running");
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-
+            Orientation orientation = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
             // Setup a variable for each drive wheel to save power level for telemetry
             double leftY = -gamepad1.left_stick_y;
             double leftX = gamepad1.left_stick_x * 1.1;
@@ -98,6 +104,7 @@ public class MechanumWheelTest extends LinearOpMode {
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Running");
             telemetry.addData("Speeds", "rearLeft (%.2f) rearRight (%.2f) frontLeft (%.2f) frontRight (%.2f)", output[0], output[1], output[2], output[3]);
+            telemetry.addData("Orientation", orientation);
             telemetry.update();
         }
         driveAPI.stopAll();
