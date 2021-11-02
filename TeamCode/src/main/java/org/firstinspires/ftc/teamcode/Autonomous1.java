@@ -100,6 +100,8 @@ public class Autonomous1 extends LinearOpMode {
             Position pos = bnimu.getPosition();
             telemetry.addData("Pos", pos);
             Acceleration accel = bnimu.getAcceleration();
+            Acceleration grav = bnimu.getGravity();
+            Acceleration floating = new Acceleration(DistanceUnit.MM, accel.xAccel - grav.xAccel, accel.yAccel - grav.yAccel, accel.zAccel - grav.zAccel, System.nanoTime())
             telemetry.addData("Accel", accel);
             telemetry.addData("Status", "Running");
             telemetry.update();
@@ -108,5 +110,12 @@ public class Autonomous1 extends LinearOpMode {
             // rear_right.setPower(0.5d);
             // front_right.setPower(0.5d);
         }
+        telemetry.addData("Status", "Stopping");
+        telemetry.update();
+        bnimu.stopAccelerationIntegration();
+        rear_left.setPower(0);
+        front_left.setPower(0);
+        rear_right.setPower(0);
+        front_right.setPower(0);
     }
 }
