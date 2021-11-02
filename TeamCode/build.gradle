@@ -11,6 +11,10 @@
 
 // Custom definitions may go here
 
+android {
+    ndkVersion '23.0.7599858'
+}
+
 // Include common definitions from above.
 apply from: '../build.common.gradle'
 apply from: '../build.dependencies.gradle'
