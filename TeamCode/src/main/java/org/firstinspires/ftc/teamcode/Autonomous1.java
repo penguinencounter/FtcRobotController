@@ -99,6 +99,8 @@ public class Autonomous1 extends LinearOpMode {
             telemetry.addData("Angle Z", orientation.thirdAngle);
             Position pos = bnimu.getPosition();
             telemetry.addData("Pos", pos);
+            Acceleration accel = bnimu.getAcceleration();
+            telemetry.addData("Accel", accel);
             telemetry.addData("Status", "Running");
             telemetry.update();
             // rear_left.setPower(0.5d);
