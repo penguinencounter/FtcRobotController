@@ -34,6 +34,7 @@ import org.firstinspires.ftc.robotcore.external.android.AndroidTextToSpeech;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.MechanumWheelDriveAPI;
@@ -63,6 +64,7 @@ public class MechanumWheelTest extends LinearOpMode {
     private DcMotor frontRight = null;
     private DcMotor duckSpinner = null;
     private DcMotor armVert = null;
+    private Servo claw = null;
     private AndroidTextToSpeech tts;
     private MechanumWheelDriveAPI driveAPI;
 
@@ -82,6 +84,11 @@ public class MechanumWheelTest extends LinearOpMode {
         frontRight = hardwareMap.get(DcMotor.class, "front_right");
         duckSpinner = hardwareMap.get(DcMotor.class, "duck_spinner");
         armVert = hardwareMap.get(DcMotor.class, "arm_vert");
+        claw = hardwareMap.get(Servo.class, "claw");
+
+        telemetry.addData("claw is", claw);
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -92,7 +99,10 @@ public class MechanumWheelTest extends LinearOpMode {
         rearLeft.setDirection(DcMotor.Direction.REVERSE);
         armVert.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         // armVert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armVert.setTargetPosition(0);
         
+        claw.setPosition(0.0d);
+
         duckSpinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         
         driveAPI = new MechanumWheelDriveAPI(rearLeft, rearRight, frontLeft, frontRight);
@@ -118,28 +128,41 @@ public class MechanumWheelTest extends LinearOpMode {
             rearRight.setPower(output[2]);
             frontRight.setPower(output[3]);
             
-            if (gamepad2.y == true) {
-                duckSpinner.setPower(1);
-            } else if (gamepad2.x == true) {
-                duckSpinner.setPower(-1);
-            } else {
-                duckSpinner.setPower(0);
+            int[] positions = {-20, -115, -275, -450};
+
+            if (gamepad2.dpad_up) {
+                armVert.setTargetPosition(positions[3]);
             }
-            
-            if (gamepad2.a == true) {
-                armVert.setTargetPosition(-275);
-                armVert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                armVert.setPower(0.2);
-            } else if (gamepad2.b == true) {
-                armVert.setPower(-0.25);
-            } else {
-                armVert.setPower(0);
+            else if (gamepad2.dpad_right) {
+                armVert.setTargetPosition(positions[2]);
+            }
+            else if (gamepad2.dpad_left) {
+                armVert.setTargetPosition(positions[1]);
+            }
+            else if (gamepad2.dpad_down) {
+                armVert.setTargetPosition(positions[0]);
             }
 
+            if (gamepad2.left_bumper) {
+                telemetry.addData("LB", "active");
+                claw.setPosition(45);
+            }
+            else if (gamepad2.right_bumper) {
+                telemetry.addData("RB", "active");
+                claw.setPosition(0);
+            }
+            
+            armVert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            armVert.setPower(0.2);
+            
             int vpos = armVert.getCurrentPosition();
+            int target_vpos = armVert.getTargetPosition();
+            double spos = claw.getPosition();
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Running");
             telemetry.addData("Arm Position", vpos);
+            telemetry.addData("Arm Target Position", target_vpos);
+            telemetry.addData("Servo Position", spos);
             telemetry.addData("Speeds", "rearLeft (%.2f) rearRight (%.2f) frontLeft (%.2f) frontRight (%.2f)", output[0], output[1], output[2], output[3]);
             telemetry.update();
         }
