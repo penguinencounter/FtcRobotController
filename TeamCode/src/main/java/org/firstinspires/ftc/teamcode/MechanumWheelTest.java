@@ -85,11 +85,13 @@ public class MechanumWheelTest extends LinearOpMode {
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
+        armVert.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rearLeft.setDirection(DcMotor.Direction.FORWARD);
         rearRight.setDirection(DcMotor.Direction.FORWARD);
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         rearLeft.setDirection(DcMotor.Direction.REVERSE);
-        armVert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armVert.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        // armVert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         
         duckSpinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         
