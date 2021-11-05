@@ -145,7 +145,7 @@ public class MechanumWheelTest extends LinearOpMode {
 
             if (gamepad2.left_bumper) {
                 telemetry.addData("LB", "active");
-                claw.setPosition(45);
+                claw.setPosition(0.25);
             }
             else if (gamepad2.right_bumper) {
                 telemetry.addData("RB", "active");
