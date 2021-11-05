@@ -26,9 +26,9 @@ jobs:
         # A list of files, directories, and wildcard patterns to cache and restore
         path: /usr/local/lib/android/sdk/ndk
         # An explicit key for restoring and saving the cache
-        key: linux-ndkcache
+        key: linux-ndkcache-penguinencounter
         # An ordered list of keys to use for restoring the cache if no cache hit occurred for key
-        restore-keys: linux-ndkcache
+        restore-keys: linux-ndkcache-penguinencounter
     - name: Install valid NDK version
       if: steps.cache.outputs.cache-hit != 'true'
       run: sudo ${ANDROID_HOME}/tools/bin/sdkmanager --install "ndk;23.0.7599858"
