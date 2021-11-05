@@ -127,6 +127,8 @@ public class MechanumWheelTest extends LinearOpMode {
             }
             
             if (gamepad2.a == true) {
+                armVert.setTargetPosition(-275);
+                armVert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 armVert.setPower(0.2);
             } else if (gamepad2.b == true) {
                 armVert.setPower(-0.25);
