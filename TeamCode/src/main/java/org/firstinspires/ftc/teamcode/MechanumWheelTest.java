@@ -89,6 +89,7 @@ public class MechanumWheelTest extends LinearOpMode {
         rearRight.setDirection(DcMotor.Direction.FORWARD);
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         rearLeft.setDirection(DcMotor.Direction.REVERSE);
+        armVert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         
         duckSpinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         
@@ -131,8 +132,10 @@ public class MechanumWheelTest extends LinearOpMode {
                 armVert.setPower(0);
             }
 
+            int vpos = armVert.getCurrentPosition();
             // Show the elapsed game time and wheel power.
-            telemetUpdary.addData("Status", "Running");
+            telemetry.addData("Status", "Running");
+            telemetry.addData("Arm Position", vpos);
             telemetry.addData("Speeds", "rearLeft (%.2f) rearRight (%.2f) frontLeft (%.2f) frontRight (%.2f)", output[0], output[1], output[2], output[3]);
             telemetry.update();
         }
