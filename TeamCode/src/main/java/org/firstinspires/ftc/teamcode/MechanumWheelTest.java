@@ -32,13 +32,11 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.robotcore.external.android.AndroidTextToSpeech;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import com.qualcomm.robotcore.util.Range;
+import org.firstinspires.ftc.teamcode.MechanumWheelDriveAPI;
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -54,28 +52,36 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
  */
 
 @TeleOp(name="MechanumWheelTest", group="Test Scripts")
+
 public class MechanumWheelTest extends LinearOpMode {
 
     // Declare OpMode members.
-    private final ElapsedTime runtime = new ElapsedTime();
-    private BNO055IMU imu;
+    private ElapsedTime runtime = new ElapsedTime();
+    private DcMotor rearLeft = null;
+    private DcMotor rearRight = null;
+    private DcMotor frontLeft = null;
+    private DcMotor frontRight = null;
+    private DcMotor duckSpinner = null;
+    private DcMotor armVert = null;
+    private AndroidTextToSpeech tts;
+    private MechanumWheelDriveAPI driveAPI;
 
     @Override
     public void runOpMode() {
-        AndroidTextToSpeech tts = new AndroidTextToSpeech();
+        tts = new AndroidTextToSpeech();
         tts.initialize();
-        BNO055IMU.Parameters imuparams = new BNO055IMU.Parameters();
-        imu.initialize(imuparams);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        DcMotor rearLeft = hardwareMap.get(DcMotor.class, "rear_left");
-        DcMotor rearRight = hardwareMap.get(DcMotor.class, "rear_right");
-        DcMotor frontLeft = hardwareMap.get(DcMotor.class, "front_left");
-        DcMotor frontRight = hardwareMap.get(DcMotor.class, "front_right");
+        rearLeft = hardwareMap.get(DcMotor.class, "rear_left");
+        rearRight = hardwareMap.get(DcMotor.class, "rear_right");
+        frontLeft = hardwareMap.get(DcMotor.class, "front_left");
+        frontRight = hardwareMap.get(DcMotor.class, "front_right");
+        duckSpinner = hardwareMap.get(DcMotor.class, "duck_spinner");
+        armVert = hardwareMap.get(DcMotor.class, "arm_vert");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -83,8 +89,10 @@ public class MechanumWheelTest extends LinearOpMode {
         rearRight.setDirection(DcMotor.Direction.FORWARD);
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         rearLeft.setDirection(DcMotor.Direction.REVERSE);
-
-        MechanumWheelDriveAPI driveAPI = new MechanumWheelDriveAPI(rearLeft, rearRight, frontLeft, frontRight);
+        
+        duckSpinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        
+        driveAPI = new MechanumWheelDriveAPI(rearLeft, rearRight, frontLeft, frontRight);
 
         // Wait for the game to start (driver presses PLAY)
         tts.speak("Ready");
@@ -93,20 +101,40 @@ public class MechanumWheelTest extends LinearOpMode {
         tts.speak("Running");
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            Orientation orientation = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+
             // Setup a variable for each drive wheel to save power level for telemetry
             double leftY = -gamepad1.left_stick_y;
             double leftX = gamepad1.left_stick_x * 1.1;
             double rightX = gamepad1.right_stick_x;
+            
+            double[] output = driveAPI.convertInputsToPowers(leftX, leftY, rightX);
 
-            double[] output = driveAPI.runMotorsFromStick(leftX, leftY, rightX);
+            // Send calculated power to wheels
+            rearLeft.setPower(output[0]);
+            frontLeft.setPower(output[1]);
+            rearRight.setPower(output[2]);
+            frontRight.setPower(output[3]);
+            
+            if (gamepad2.y == true) {
+                duckSpinner.setPower(1);
+            } else if (gamepad2.x == true) {
+                duckSpinner.setPower(-1);
+            } else {
+                duckSpinner.setPower(0);
+            }
+            
+            if (gamepad2.a == true) {
+                armVert.setPower(0.2);
+            } else if (gamepad2.b == true) {
+                armVert.setPower(-0.25);
+            } else {
+                armVert.setPower(0);
+            }
 
             // Show the elapsed game time and wheel power.
-            telemetry.addData("Status", "Running");
+            telemetUpdary.addData("Status", "Running");
             telemetry.addData("Speeds", "rearLeft (%.2f) rearRight (%.2f) frontLeft (%.2f) frontRight (%.2f)", output[0], output[1], output[2], output[3]);
-            telemetry.addData("Orientation", orientation);
             telemetry.update();
         }
-        driveAPI.stopAll();
     }
 }
