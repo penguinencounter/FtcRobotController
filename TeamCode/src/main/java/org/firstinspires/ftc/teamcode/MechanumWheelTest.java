@@ -151,6 +151,12 @@ public class MechanumWheelTest extends LinearOpMode {
                 telemetry.addData("RB", "active");
                 claw.setPosition(0);
             }
+
+            if (gamepad2.y) {
+                duckSpinner.setPower(-1);
+            } else {
+                duckSpinner.setPower(0);
+            }
             
             armVert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             armVert.setPower(0.2);
