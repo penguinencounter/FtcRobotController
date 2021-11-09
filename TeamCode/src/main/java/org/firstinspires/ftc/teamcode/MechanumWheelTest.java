@@ -86,7 +86,6 @@ public class MechanumWheelTest extends LinearOpMode {
         armVert = hardwareMap.get(DcMotor.class, "arm_vert");
         claw = hardwareMap.get(Servo.class, "claw");
 
-        telemetry.addData("claw is", claw);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
@@ -108,10 +107,9 @@ public class MechanumWheelTest extends LinearOpMode {
         driveAPI = new MechanumWheelDriveAPI(rearLeft, rearRight, frontLeft, frontRight);
 
         // Wait for the game to start (driver presses PLAY)
-        tts.speak("Ready");
+        telemetry.speak("Ready. Move the arm to the lower position.");
         waitForStart();
         runtime.reset();
-        tts.speak("Running");
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
