@@ -37,6 +37,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
+import java.util.concurrent.TimeUnit;
+
 
 
 /**
@@ -109,10 +111,18 @@ public class Autonomous1 extends LinearOpMode {
             // front_left.setPower(0.5d);
             // rear_right.setPower(0.5d);
             // front_right.setPower(0.5d);
-            api.
+            api.move(0.5, 0.5, 0.5, 0.5);
+            TimeUnit.SECONDS.sleep(1);
+            api.move(0.5, -0.5, 0.5, -0.5);
+            TimeUnit.SECONDS.sleep(0.5);
+            api.stopAll();
             break
         }
-        while (opModeIsActive()) {}
+        while (opModeIsActive()) {
+            telemetry.addData("Status", "Idle");
+            telemetry.addData("......", "Waiting for Stop");
+            telemetry.update();
+        }
         telemetry.addData("Status", "Stopping");
         telemetry.update();
         bnimu.stopAccelerationIntegration();
