@@ -50,4 +50,11 @@ public class MechanumWheelDriveAPI {
         front_right.setPower(output[3]);
         return output;
     }
+
+    public void move(double rear_left, double rear_right, double front_left, double front_right) {
+        this.rear_left.setPower(rear_left);
+        this.rear_right.setPower(rear_right);
+        this.front_left.setPower(front_left);
+        this.front_right.setPower(front_right);
+    }
 }

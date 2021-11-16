@@ -95,21 +95,24 @@ public class Autonomous1 extends LinearOpMode {
         
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            Orientation orientation = bnimu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-            telemetry.addData("Angle Z", orientation.thirdAngle);
-            Position pos = bnimu.getPosition();
-            telemetry.addData("Pos", pos);
-            Acceleration accel = bnimu.getAcceleration();
-            Acceleration grav = bnimu.getGravity();
-            Acceleration floating = new Acceleration(DistanceUnit.MM, accel.xAccel - grav.xAccel, accel.yAccel - grav.yAccel, accel.zAccel - grav.zAccel, System.nanoTime());
-            telemetry.addData("Accel", floating);
+            // Orientation orientation = bnimu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+            // telemetry.addData("Angle Z", orientation.thirdAngle);
+            // Position pos = bnimu.getPosition();
+            // telemetry.addData("Pos", pos);
+            // Acceleration accel = bnimu.getAcceleration();
+            // Acceleration grav = bnimu.getGravity();
+            // Acceleration floating = new Acceleration(DistanceUnit.MM, accel.xAccel - grav.xAccel, accel.yAccel - grav.yAccel, accel.zAccel - grav.zAccel, System.nanoTime());
+            // telemetry.addData("Accel", floating);
             telemetry.addData("Status", "Running");
             telemetry.update();
             // rear_left.setPower(0.5d);
             // front_left.setPower(0.5d);
             // rear_right.setPower(0.5d);
             // front_right.setPower(0.5d);
+            api.
+            break
         }
+        while (opModeIsActive()) {}
         telemetry.addData("Status", "Stopping");
         telemetry.update();
         bnimu.stopAccelerationIntegration();
