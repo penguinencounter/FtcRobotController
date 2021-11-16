@@ -67,6 +67,14 @@ public class Autonomous1 extends LinearOpMode {
     private MechanumWheelDriveAPI api;
     private BNO055IMU bnimu;
 
+    private void sleepMs(long ms) {
+        try {
+            TimeUnit.MILLISECONDS.sleep(ms);
+        } catch (InterruptedException ie) {
+            System.out.println(ie);
+        }
+    }
+
     @Override
     public void runOpMode() {
         expansion_Hub_1 = hardwareMap.get(Blinker.class, "Expansion Hub 1");
@@ -107,16 +115,18 @@ public class Autonomous1 extends LinearOpMode {
             // telemetry.addData("Accel", floating);
             telemetry.addData("Status", "Running");
             telemetry.update();
-            // rear_left.setPower(0.5d);
-            // front_left.setPower(0.5d);
-            // rear_right.setPower(0.5d);
-            // front_right.setPower(0.5d);
-            api.move(0.5, 0.5, 0.5, 0.5);
-            TimeUnit.SECONDS.sleep(1);
-            api.move(0.5, -0.5, 0.5, -0.5);
-            TimeUnit.SECONDS.sleep(0.5);
+            // rear_left.setPower(1d);
+            // front_left.setPower(1d);
+            // rear_right.setPower(1d);
+            // front_right.setPower(1d);
+            api.move(1, 1, 1, 1);
+            sleepMs(2000);
+            api.move(1, -1, 1, -1);
+            sleepMs(1000);
+            api.move(1, 1, 1, 1);
+            sleepMs(2500);
             api.stopAll();
-            break
+            break;
         }
         while (opModeIsActive()) {
             telemetry.addData("Status", "Idle");

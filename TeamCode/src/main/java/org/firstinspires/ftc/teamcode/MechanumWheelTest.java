@@ -152,6 +152,8 @@ public class MechanumWheelTest extends LinearOpMode {
 
             if (gamepad2.y) {
                 duckSpinner.setPower(-1);
+            } else if (gamepad2.x) {
+                duckSpinner.setPower(1);
             } else {
                 duckSpinner.setPower(0);
             }
