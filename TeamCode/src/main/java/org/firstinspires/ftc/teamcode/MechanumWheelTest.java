@@ -68,6 +68,8 @@ public class MechanumWheelTest extends LinearOpMode {
     private AndroidTextToSpeech tts;
     private MechanumWheelDriveAPI driveAPI;
 
+    private int latestArmPositionId = 0;
+
     @Override
     public void runOpMode() {
         tts = new AndroidTextToSpeech();
@@ -117,7 +119,11 @@ public class MechanumWheelTest extends LinearOpMode {
             double leftY = -gamepad1.left_stick_y;
             double leftX = gamepad1.left_stick_x * 1.1;
             double rightX = gamepad1.right_stick_x;
-            
+            if (latestArmPositionId == 0) {
+                driveAPI.power_scale = 0.25;
+            } else {
+                driveAPI.power_scale = 1;
+            }
             double[] output = driveAPI.convertInputsToPowers(leftX, leftY, rightX);
 
             // Send calculated power to wheels
@@ -130,15 +136,19 @@ public class MechanumWheelTest extends LinearOpMode {
 
             if (gamepad2.dpad_up) {
                 armVert.setTargetPosition(positions[3]);
+                latestArmPositionId = 3;
             }
             else if (gamepad2.dpad_right) {
                 armVert.setTargetPosition(positions[2]);
+                latestArmPositionId = 2;
             }
             else if (gamepad2.dpad_left) {
                 armVert.setTargetPosition(positions[1]);
+                latestArmPositionId = 1;
             }
             else if (gamepad2.dpad_down) {
                 armVert.setTargetPosition(positions[0]);
+                latestArmPositionId = 0;
             }
 
             if (gamepad2.left_bumper) {

@@ -8,7 +8,7 @@ public class MechanumWheelDriveAPI {
     private DcMotor front_right;
     private DcMotor rear_left;
     private DcMotor rear_right;
-    private final float power_scale;
+    public double power_scale;
 
     public MechanumWheelDriveAPI(DcMotor rear_left, DcMotor rear_right, DcMotor front_left, DcMotor front_right) {
         /*
