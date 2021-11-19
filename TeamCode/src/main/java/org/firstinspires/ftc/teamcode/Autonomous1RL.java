@@ -53,9 +53,9 @@ import java.util.concurrent.TimeUnit;
  * Remove a @Disabled the on the next line or two (if present) to add this opmode to the Driver Station OpMode list,
  * or add a @Disabled annotation to prevent this OpMode from being added to the Driver Station
  */
-@Autonomous
+@Autonomous(name="Auto-r1 config red,left", group="Auto-r1")
 
-public class Autonomous1 extends LinearOpMode {
+public class Autonomous1RL extends LinearOpMode {
     private Blinker expansion_Hub_1;
     private Blinker expansion_Hub_2;
     private DcMotor duck_spinner;
@@ -120,11 +120,11 @@ public class Autonomous1 extends LinearOpMode {
             // rear_right.setPower(1d);
             // front_right.setPower(1d);
             api.move(1, 1, 1, 1);
-            sleepMs(2000);
-            api.move(1, -1, 1, -1);
+            sleepMs(1200);
+            api.move(-1, 1, -1, 1);
             sleepMs(1000);
             api.move(1, 1, 1, 1);
-            sleepMs(2500);
+            sleepMs(1000);
             api.stopAll();
             break;
         }
