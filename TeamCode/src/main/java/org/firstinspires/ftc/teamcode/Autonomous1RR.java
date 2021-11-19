@@ -72,6 +72,7 @@ public class Autonomous1RR extends LinearOpMode {
     private DcMotor rear_right;
     private MechanumWheelDriveAPI api;
     private BNO055IMU bnimu;
+    private DcMotor armVert;
 
     private void sleepMs(long ms) {
         try {
