@@ -109,7 +109,7 @@ public class MechanumWheelTest extends LinearOpMode {
         driveAPI = new MechanumWheelDriveAPI(rearLeft, rearRight, frontLeft, frontRight);
 
         // Wait for the game to start (driver presses PLAY)
-        telemetry.speak("Ready. Move the arm to the lower position.");
+        telemetry.speak("insert funny meme here");
         waitForStart();
         runtime.reset();
         // run until the end of the match (driver presses STOP)
