@@ -59,7 +59,7 @@ import java.util.concurrent.TimeUnit;
 Differences from Autonomous1RL
 ! alliance shipping hub is in the way
 */
-@Autonomous(name="Auto-r1 config red,right", group="Auto-r1")
+@Autonomous(name="Auto-r1 config blue,left", group="Auto-r1")
 
 public class Autonomous1BL extends LinearOpMode {
     private Blinker expansion_Hub_1;
