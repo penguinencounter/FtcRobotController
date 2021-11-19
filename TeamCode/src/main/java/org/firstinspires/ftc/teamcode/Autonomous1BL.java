@@ -103,7 +103,7 @@ public class Autonomous1BL extends LinearOpMode {
         rear_left.setDirection(DcMotor.Direction.REVERSE);
         
         api = new MechanumWheelDriveAPI(rear_left, rear_right, front_left, front_right);
-        armVert.setTargetPosition(400);
+        armVert.setTargetPosition(-400);
         armVert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armVert.setPower(0.2);
         telemetry.addData("Status", "Initialized");
