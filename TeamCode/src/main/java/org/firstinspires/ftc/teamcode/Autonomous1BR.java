@@ -64,6 +64,7 @@ public class Autonomous1BR extends LinearOpMode {
     private Gyroscope imu;
     private DcMotor rear_left;
     private DcMotor rear_right;
+    private DcMotor armVert;
     private MechanumWheelDriveAPI api;
     private BNO055IMU bnimu;
 
@@ -85,6 +86,8 @@ public class Autonomous1BR extends LinearOpMode {
         imu = hardwareMap.get(Gyroscope.class, "imu");
         rear_left = hardwareMap.get(DcMotor.class, "rear_left");
         rear_right = hardwareMap.get(DcMotor.class, "rear_right");
+        armVert = hardwareMap.get(DcMotor.class, "arm_vert");
+        armVert.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         bnimu = (BNO055IMU)imu;
         BNO055IMU.Parameters imuparams = new BNO055IMU.Parameters();
         bnimu.initialize(imuparams);
@@ -94,6 +97,9 @@ public class Autonomous1BR extends LinearOpMode {
         rear_left.setDirection(DcMotor.Direction.REVERSE);
         
         api = new MechanumWheelDriveAPI(rear_left, rear_right, front_left, front_right);
+        armVert.setTargetPosition(400);
+        armVert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armVert.setPower(0.2);
         telemetry.addData("Status", "Initialized");
         telemetry.addData("Is it working?", bnimu.getSystemStatus());
         telemetry.update();
