@@ -64,7 +64,6 @@ public class Autonomous1BR extends LinearOpMode {
     private Gyroscope imu;
     private DcMotor rear_left;
     private DcMotor rear_right;
-    private DcMotor armVert;
     private MechanumWheelDriveAPI api;
     private BNO055IMU bnimu;
     private DcMotor armVert;
