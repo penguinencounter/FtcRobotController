@@ -126,7 +126,7 @@ public class Autonomous1BR extends LinearOpMode {
             // rear_right.setPower(1d);
             // front_right.setPower(1d);
             api.move(1, 1, 1, 1);
-            sleepMs(1200);
+            sleepMs(1400);
             api.move(1, -1, 1, -1); // The other direction
             sleepMs(1000);
             api.move(1, 1, 1, 1);
