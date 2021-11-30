@@ -117,20 +117,8 @@ public class Autonomous1BL extends LinearOpMode {
         
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            // Orientation orientation = bnimu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-            // telemetry.addData("Angle Z", orientation.thirdAngle);
-            // Position pos = bnimu.getPosition();
-            // telemetry.addData("Pos", pos);
-            // Acceleration accel = bnimu.getAcceleration();
-            // Acceleration grav = bnimu.getGravity();
-            // Acceleration floating = new Acceleration(DistanceUnit.MM, accel.xAccel - grav.xAccel, accel.yAccel - grav.yAccel, accel.zAccel - grav.zAccel, System.nanoTime());
-            // telemetry.addData("Accel", floating);
             telemetry.addData("Status", "Running");
             telemetry.update();
-            // rear_left.setPower(1d);
-            // front_left.setPower(1d);
-            // rear_right.setPower(1d);
-            // front_right.setPower(1d);
             api.move(1, 1, 1, 1);
             sleepMs(50); // Just enough to turn...
             api.move(1, -1, 1, -1);
