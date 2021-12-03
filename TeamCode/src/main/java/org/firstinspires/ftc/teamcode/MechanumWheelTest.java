@@ -109,7 +109,7 @@ public class MechanumWheelTest extends LinearOpMode {
         driveAPI = new MechanumWheelDriveAPI(rearLeft, rearRight, frontLeft, frontRight);
 
         // Wait for the game to start (driver presses PLAY)
-        telemetry.speak("insert funny meme here");
+        telemetry.speak("Ready!");
         waitForStart();
         runtime.reset();
         // run until the end of the match (driver presses STOP)
@@ -119,7 +119,7 @@ public class MechanumWheelTest extends LinearOpMode {
             double leftY = -gamepad1.left_stick_y;
             double leftX = gamepad1.left_stick_x * 1.1;
             double rightX = gamepad1.right_stick_x;
-            if (latestArmPositionId == 0) {
+            if (latestArmPositionId == 0 || gamepad1.b) {
                 driveAPI.power_scale = 0.25;
             } else {
                 driveAPI.power_scale = 1;
