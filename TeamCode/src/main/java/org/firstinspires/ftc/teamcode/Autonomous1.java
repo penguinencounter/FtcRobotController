@@ -74,9 +74,9 @@ public class Autonomous1 extends LinearOpMode {
 
     void prepareRobot() {
         // Lift arm to prevent dragging
-        armVert.setTargetPosition(-50);
+        armVert.setTargetPosition(50);
         armVert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
+        armVert.setPower(0.2);
     }
     
     void shippingContainer() {
