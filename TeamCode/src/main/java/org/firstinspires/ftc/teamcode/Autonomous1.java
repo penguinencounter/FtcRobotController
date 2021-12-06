@@ -24,6 +24,7 @@ import com.qualcomm.robotcore.hardware.Blinker;
 import com.qualcomm.robotcore.hardware.Gyroscope;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import java.util.concurrent.TimeUnit;
 
@@ -130,6 +131,7 @@ public class Autonomous1 extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         boolean prevXButton = false;
         boolean prevYButton = false;
+        RobotLog.i("Initialization complete; now in configuration mode.");
         while (!isStarted()) {
             telemetry.addData("Status", "Initialized; Configuring");
             telemetry.addData("Alliance", configAlliance);
@@ -141,9 +143,11 @@ public class Autonomous1 extends LinearOpMode {
                 switch (configAlliance) {
                     case RED:
                         configAlliance = Alliance.BLUE;
+                        RobotLog.i("Alliance switched to BLUE.");
                         break;
                     case BLUE:
                         configAlliance = Alliance.RED;
+                        RobotLog.i("Alliance switched to RED.");
                         break;
                 }
             }
@@ -151,30 +155,37 @@ public class Autonomous1 extends LinearOpMode {
                 switch (configAutoTarget) {
                     case SHIPPING_CONTAINER:
                         configAutoTarget = Targets.WAREHOUSE;
+                        RobotLog.i("Autonomous target switched to WAREHOUSE.");
                         break;
                     case WAREHOUSE:
                         configAutoTarget = Targets.SHIPPING_CONTAINER;
+                        RobotLog.i("Autonomous target switched to SHIPPING_CONTAINER.");
+                        break;
                 }
             }
             
             prevXButton = gamepad1.x;
             prevYButton = gamepad1.y;
         }
+        RobotLog.i("Exited configuration mode. Verifying start...");
         waitForStart();
-        // run until the end of the match (driver presses STOP)
+        RobotLog.i("Started.");
+        // run if the match is started
         if (opModeIsActive()) {
             if (configAutoTarget == Targets.SHIPPING_CONTAINER) {
                 shippingContainer();
             }
             else if (configAutoTarget == Targets.WAREHOUSE) {
-                System.out.println("??????");
+                RobotLog.w("I don't know how to get to the Warehouse. Blame Miles");
             }
         }
+        RobotLog.i("Autonomous complete. Idling.");
         while (opModeIsActive()) {
             telemetry.addData("Status", "Idle");
             telemetry.addData("......", "Waiting for Stop");
             telemetry.update();
         }
+        RobotLog.i("Stopping.");
         telemetry.addData("Status", "Stopping");
         telemetry.update();
         bnimu.stopAccelerationIntegration();
