@@ -51,6 +51,9 @@ if __name__ == "__main__":
     print('Connecting and downloading file list...')
     files = get_files_on_server(ROBOT_HTTP_ADDR, FILE_LIST_PATH)
     transfer, remove = get_files_to_remove(CODE_DIR, files)
+    # files = ['src/main/test/Test.java', 'src/main/test/Test3.java', 'src/main/test/WOW.java']
+    # transfer = ['Test2.java', 'Test.java']
+    # remove = ['src/main/test/Test.java']
     files_vis = [x.split('/')[-1] for x in files]
     print('CHANGES:')
     print('Remote'.ljust(50, '-')+' <-- ' + 'Local'.ljust(50, '-'))
