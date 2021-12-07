@@ -48,6 +48,7 @@ def upload_file(robot_url: str, local_path: str):
 
 
 if __name__ == "__main__":
+    print('Connecting and downloading file list...')
     files = get_files_on_server(ROBOT_HTTP_ADDR, FILE_LIST_PATH)
     print(files)
     transfer, remove = get_files_to_remove(CODE_DIR, files)
