@@ -29,6 +29,12 @@ def get_files_to_remove(code_dir_path: str, remote_src: list):
     return need_to_remove
 
 
+def upload_files(robot_url: str, local_path: str, remote_path: str):
+    target = "java/file/upload"
+    with open(local_path) as f:
+        requests.post(robot_url+target, files=dict())
+
+
 if __name__ == "__main__":
     files = get_files_on_server(ROBOT_HTTP_ADDR, FILE_LIST_PATH)
     print(files)
