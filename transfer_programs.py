@@ -50,9 +50,15 @@ def upload_file(robot_url: str, local_path: str):
 if __name__ == "__main__":
     print('Connecting and downloading file list...')
     files = get_files_on_server(ROBOT_HTTP_ADDR, FILE_LIST_PATH)
-    print(files)
     transfer, remove = get_files_to_remove(CODE_DIR, files)
-    print(remove)
+    print('CHANGES:')
+    print('Remote'.ljust(50, '-')+' ' + '<-- Local'.ljust(50, '-'))
+    for x in range(max(len(files), len(transfer))):
+        if x < len(files):
+            print(('X {files[x]}' if files[x] in remove else f'{files[x]}').ljust(50), end='')
+        print(' ', end='')
+        if x < len(transfer):
+            print(transfer[x].ljust(50))
     input("Press enter to continue with transfer...")
     for file in remove:
         delete_file(ROBOT_HTTP_ADDR, file)
