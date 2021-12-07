@@ -26,17 +26,36 @@ def get_files_to_remove(code_dir_path: str, remote_src: list):
     for file in files:
         if remote_pathfix+file in remote_src:
             need_to_remove.append(remote_pathfix+file)
-    return need_to_remove
+    need_to_transfer = []
+    for file in files:
+        match = re.match(r'(.*\/).*\.java', file)
+        if match:
+            need_to_transfer.append(file)
+    return need_to_transfer, need_to_remove
 
 
-def upload_files(robot_url: str, local_path: str, remote_path: str):
+def delete_file(robot_url: str, remote_path: str):
+    target = "java/file/delete"
+    requests.post(robot_url+target, data={"delete": [remote_path]})
+
+
+def upload_file(robot_url: str, local_path: str):
     target = "java/file/upload"
     with open(local_path) as f:
-        requests.post(robot_url+target, files=dict())
+        print('Uploading: {local_path}')
+        requests.post(robot_url+target, files={"file": f})
+    
 
 
 if __name__ == "__main__":
     files = get_files_on_server(ROBOT_HTTP_ADDR, FILE_LIST_PATH)
     print(files)
-    remove = get_files_to_remove(CODE_DIR, files)
+    transfer, remove = get_files_to_remove(CODE_DIR, files)
     print(remove)
+    input("Press enter to continue with transfer...")
+    for file in remove:
+        delete_file(ROBOT_HTTP_ADDR, file)
+    for file in transfer:
+        upload_file(ROBOT_HTTP_ADDR, file)
+    print("Doneso")
+    
