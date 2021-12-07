@@ -51,18 +51,23 @@ if __name__ == "__main__":
     print('Connecting and downloading file list...')
     files = get_files_on_server(ROBOT_HTTP_ADDR, FILE_LIST_PATH)
     transfer, remove = get_files_to_remove(CODE_DIR, files)
+    files_vis = [x.split('/')[-1] for x in files]
     print('CHANGES:')
-    print('Remote'.ljust(50, '-')+' ' + '<-- Local'.ljust(50, '-'))
+    print('Remote'.ljust(50, '-')+' <-- ' + 'Local'.ljust(50, '-'))
     for x in range(max(len(files), len(transfer))):
-        if x < len(files):
-            print(('X {files[x]}' if files[x] in remove else f'{files[x]}').ljust(50), end='')
-        print(' ', end='')
+        if x < len(files_vis):
+            print((f'[delete] {files_vis[x]}' if files[x] in remove else f'{files_vis[x]}').ljust(50), end='')
+        else:
+            print(' '*50, end='')
+        print('     ', end='')
         if x < len(transfer):
             print(transfer[x].ljust(50))
+        else:
+            print(' '*50)
     input("Press enter to continue with transfer...")
     for file in remove:
         delete_file(ROBOT_HTTP_ADDR, file)
     for file in transfer:
-        upload_file(ROBOT_HTTP_ADDR, file)
+        upload_file(ROBOT_HTTP_ADDR, CODE_DIR+file)
     print("Doneso")
     
