@@ -42,7 +42,7 @@ import java.util.concurrent.TimeUnit;
  * Remove a @Disabled the on the next line or two (if present) to add this opmode to the Driver Station OpMode list,
  * or add a @Disabled annotation to prevent this OpMode from being added to the Driver Station
  */
-@Autonomous(name="Auto-r1", group="Auto-r1")
+@Autonomous(name="Auto-r1 (TESTING ONLY)", group="Auto-r1")
 
 public class Autonomous1 extends LinearOpMode {
     private Blinker expansion_Hub_1;
@@ -62,8 +62,8 @@ public class Autonomous1 extends LinearOpMode {
     public enum Targets {
         SHIPPING_CONTAINER, WAREHOUSE
     }
-    private Targets configAutoTarget = Targets.SHIPPING_CONTAINER;
-    private Alliance configAlliance = Alliance.RED;
+    public Targets configAutoTarget = Targets.SHIPPING_CONTAINER;
+    public Alliance configAlliance = Alliance.RED;
 
     private void sleepMs(long ms) {
         try {
@@ -71,6 +71,28 @@ public class Autonomous1 extends LinearOpMode {
         } catch (InterruptedException ie) {
             System.out.println(ie);
         }
+    }
+
+    void prepareHardwareMapping() {
+        expansion_Hub_1 = hardwareMap.get(Blinker.class, "Expansion Hub 1");
+        expansion_Hub_2 = hardwareMap.get(Blinker.class, "Expansion Hub 2");
+        duck_spinner = hardwareMap.get(DcMotor.class, "duck_spinner");
+        front_left = hardwareMap.get(DcMotor.class, "front_left");
+        front_right = hardwareMap.get(DcMotor.class, "front_right");
+        imu = hardwareMap.get(Gyroscope.class, "imu");
+        rear_left = hardwareMap.get(DcMotor.class, "rear_left");
+        rear_right = hardwareMap.get(DcMotor.class, "rear_right");
+        armVert = hardwareMap.get(DcMotor.class, "arm_vert");
+        armVert.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        bnimu = (BNO055IMU)imu;
+        BNO055IMU.Parameters imuparams = new BNO055IMU.Parameters();
+        bnimu.initialize(imuparams);
+        rear_left.setDirection(DcMotor.Direction.FORWARD);
+        rear_right.setDirection(DcMotor.Direction.FORWARD);
+        front_left.setDirection(DcMotor.Direction.REVERSE);
+        rear_left.setDirection(DcMotor.Direction.REVERSE);
+
+        api = new MechanumWheelDriveAPI(rear_left, rear_right, front_left, front_right);
     }
 
     void prepareRobot() {
@@ -103,27 +125,18 @@ public class Autonomous1 extends LinearOpMode {
         }
     }
 
+    public void runFromConfig() {
+        if (configAutoTarget == Targets.SHIPPING_CONTAINER) {
+            shippingContainer();
+        }
+        else if (configAutoTarget == Targets.WAREHOUSE) {
+            RobotLog.w("I don't know how to get to the Warehouse. Blame Miles");
+        }
+    }
+
     @Override
     public void runOpMode() {
-        expansion_Hub_1 = hardwareMap.get(Blinker.class, "Expansion Hub 1");
-        expansion_Hub_2 = hardwareMap.get(Blinker.class, "Expansion Hub 2");
-        duck_spinner = hardwareMap.get(DcMotor.class, "duck_spinner");
-        front_left = hardwareMap.get(DcMotor.class, "front_left");
-        front_right = hardwareMap.get(DcMotor.class, "front_right");
-        imu = hardwareMap.get(Gyroscope.class, "imu");
-        rear_left = hardwareMap.get(DcMotor.class, "rear_left");
-        rear_right = hardwareMap.get(DcMotor.class, "rear_right");
-        armVert = hardwareMap.get(DcMotor.class, "arm_vert");
-        armVert.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bnimu = (BNO055IMU)imu;
-        BNO055IMU.Parameters imuparams = new BNO055IMU.Parameters();
-        bnimu.initialize(imuparams);
-        rear_left.setDirection(DcMotor.Direction.FORWARD);
-        rear_right.setDirection(DcMotor.Direction.FORWARD);
-        front_left.setDirection(DcMotor.Direction.REVERSE);
-        rear_left.setDirection(DcMotor.Direction.REVERSE);
-
-        api = new MechanumWheelDriveAPI(rear_left, rear_right, front_left, front_right);
+        prepareHardwareMapping();
         prepareRobot();
         telemetry.addData("Status", "Initialized");
         telemetry.addData("Is it working?", bnimu.getSystemStatus());
@@ -172,12 +185,7 @@ public class Autonomous1 extends LinearOpMode {
         RobotLog.i("Started.");
         // run if the match is started
         if (opModeIsActive()) {
-            if (configAutoTarget == Targets.SHIPPING_CONTAINER) {
-                shippingContainer();
-            }
-            else if (configAutoTarget == Targets.WAREHOUSE) {
-                RobotLog.w("I don't know how to get to the Warehouse. Blame Miles");
-            }
+            runFromConfig();
         }
         RobotLog.i("Autonomous complete. Idling.");
         while (opModeIsActive()) {
