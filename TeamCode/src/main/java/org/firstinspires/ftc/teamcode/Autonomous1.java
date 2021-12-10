@@ -125,12 +125,35 @@ public class Autonomous1 extends LinearOpMode {
         }
     }
 
+    void warehouse() {
+        switch (configAlliance) {
+            case RED:
+                api.move(1, 1, 1, 1);
+                sleepMs(1400);
+                api.move(1, -1, 1, -1);
+                sleepMs(1000);
+                api.move(1, 1, 1, 1);
+                sleepMs(2000);
+                api.stopAll();
+                break;
+            case BLUE:
+                api.move(1, 1, 1, 1);
+                sleepMs(1400);
+                api.move(-1, 1, -1, 1);
+                sleepMs(1000);
+                api.move(1, 1, 1, 1);
+                sleepMs(2000);
+                api.stopAll();
+                break;
+        }
+    }
+
     public void runFromConfig() {
         if (configAutoTarget == Targets.SHIPPING_CONTAINER) {
             shippingContainer();
         }
         else if (configAutoTarget == Targets.WAREHOUSE) {
-            RobotLog.w("I don't know how to get to the Warehouse. Blame Miles");
+            warehouse();
         }
     }
 
