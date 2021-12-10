@@ -39,6 +39,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.MechanumWheelDriveAPI;
 
+import java.util.Random;
+
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
  * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
@@ -67,6 +69,26 @@ public class MechanumWheelTest extends LinearOpMode {
     private Servo claw = null;
     private AndroidTextToSpeech tts;
     private MechanumWheelDriveAPI driveAPI;
+    private String[] memes = {
+            "meow",
+            "According to all known laws of aviation, there is no way that a bee should be able to fly",
+            "Ready",
+            "Ready",
+            "Initialized",
+            "Who let the dogs out",
+            "Remember to SMASH that uhm START button!",
+            "Are you? -Jayden",
+            "bleep!",
+            "hello!",
+            "Ready",
+            "Joe Mama",
+            "Hi I'm Vince with Slap Chop",
+            "Hi I'm Phil Swift with Flex Tape",
+            "That's a lot of damage!",
+            "start noises intensify",
+            "REEEE MILES IS PLAYING FORTNITE!",
+            "Ready or not, here we come!"
+    };
 
     @Override
     public void runOpMode() {
@@ -105,9 +127,9 @@ public class MechanumWheelTest extends LinearOpMode {
         duckSpinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         
         driveAPI = new MechanumWheelDriveAPI(rearLeft, rearRight, frontLeft, frontRight);
-
+        Random rand = new Random();
         // Wait for the game to start (driver presses PLAY)
-        telemetry.speak("Ready!");
+        telemetry.speak(memes[rand.nextInt(memes.length)]);
         waitForStart();
         runtime.reset();
         // run until the end of the match (driver presses STOP)
