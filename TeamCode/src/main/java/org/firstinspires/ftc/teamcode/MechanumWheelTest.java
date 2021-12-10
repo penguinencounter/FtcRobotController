@@ -68,8 +68,6 @@ public class MechanumWheelTest extends LinearOpMode {
     private AndroidTextToSpeech tts;
     private MechanumWheelDriveAPI driveAPI;
 
-    private int latestArmPositionId = 0;
-
     @Override
     public void runOpMode() {
         tts = new AndroidTextToSpeech();
@@ -102,7 +100,7 @@ public class MechanumWheelTest extends LinearOpMode {
         // armVert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armVert.setTargetPosition(0);
         
-        claw.setPosition(0.0d);
+        claw.setPosition(1.0d);
 
         duckSpinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         
@@ -119,7 +117,7 @@ public class MechanumWheelTest extends LinearOpMode {
             double leftY = -gamepad1.left_stick_y;
             double leftX = gamepad1.left_stick_x * 1.1;
             double rightX = gamepad1.right_stick_x;
-            if (latestArmPositionId == 0 || gamepad1.b) {
+            if (gamepad1.b) {
                 driveAPI.power_scale = 0.25;
             } else {
                 driveAPI.power_scale = 1;
@@ -136,19 +134,22 @@ public class MechanumWheelTest extends LinearOpMode {
 
             if (gamepad2.dpad_up) {
                 armVert.setTargetPosition(positions[3]);
-                latestArmPositionId = 3;
             }
             else if (gamepad2.dpad_right) {
                 armVert.setTargetPosition(positions[2]);
-                latestArmPositionId = 2;
             }
             else if (gamepad2.dpad_left) {
                 armVert.setTargetPosition(positions[1]);
-                latestArmPositionId = 1;
             }
             else if (gamepad2.dpad_down) {
                 armVert.setTargetPosition(positions[0]);
-                latestArmPositionId = 0;
+            }
+
+            if (-gamepad2.left_stick_y > 0.5) {
+                armVert.setTargetPosition(Math.min(armVert.getTargetPosition()+1, 450));
+            }
+            if (-gamepad2.left_stick_y < -0.5) {
+                armVert.setTargetPosition(Math.max(armVert.getTargetPosition()-1, 0));
             }
 
             if (gamepad2.left_bumper) {
@@ -178,6 +179,7 @@ public class MechanumWheelTest extends LinearOpMode {
             telemetry.addData("Status", "Running");
             telemetry.addData("Arm Position", vpos);
             telemetry.addData("Arm Target Position", target_vpos);
+            telemetry.addData("gp2-l-y", -gamepad2.left_stick_y);
             telemetry.addData("Servo Position", spos);
             telemetry.addData("Speeds", "rearLeft (%.2f) rearRight (%.2f) frontLeft (%.2f) frontRight (%.2f)", output[0], output[1], output[2], output[3]);
             telemetry.update();

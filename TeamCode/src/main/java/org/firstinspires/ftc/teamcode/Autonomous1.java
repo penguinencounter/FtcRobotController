@@ -24,6 +24,7 @@ import com.qualcomm.robotcore.hardware.Blinker;
 import com.qualcomm.robotcore.hardware.Gyroscope;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import java.util.concurrent.TimeUnit;
@@ -56,6 +57,7 @@ public class Autonomous1 extends LinearOpMode {
     private MechanumWheelDriveAPI api;
     private BNO055IMU bnimu;
     private DcMotor armVert;
+    private Servo claw;
     public enum Alliance {
         BLUE, RED
     }
@@ -84,6 +86,7 @@ public class Autonomous1 extends LinearOpMode {
         rear_right = hardwareMap.get(DcMotor.class, "rear_right");
         armVert = hardwareMap.get(DcMotor.class, "arm_vert");
         armVert.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        claw = hardwareMap.get(Servo.class, "claw");
         bnimu = (BNO055IMU)imu;
         BNO055IMU.Parameters imuparams = new BNO055IMU.Parameters();
         bnimu.initialize(imuparams);
@@ -96,10 +99,11 @@ public class Autonomous1 extends LinearOpMode {
     }
 
     void prepareRobot() {
-        // Lift arm to prevent dragging
-        armVert.setTargetPosition(50);
-        armVert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armVert.setPower(0.2);
+        // Lift arm to prevent dragging (wait, no)
+        // armVert.setTargetPosition(50);
+        // armVert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        // armVert.setPower(0.2);
+        claw.setPosition(1.0d);
     }
     
     void shippingContainer() {
@@ -154,6 +158,14 @@ public class Autonomous1 extends LinearOpMode {
         }
         else if (configAutoTarget == Targets.WAREHOUSE) {
             warehouse();
+        }
+    }
+
+    public void waitForStop() {
+        while (opModeIsActive()) {
+            telemetry.addData("Status", "Idle");
+            telemetry.addData("......", "Waiting for Stop");
+            telemetry.update();
         }
     }
 

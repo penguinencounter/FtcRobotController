@@ -2,9 +2,10 @@ import requests
 import json
 import os
 import re
-import pycurl
+import time
 
-ROBOT_HTTP_ADDR = 'http://'+input('Enter IP and Port for Robot Controller Console: ')+'/'
+# ROBOT_HTTP_ADDR = 'http://'+input('Enter IP and Port for Robot Controller Console: ')+'/'
+ROBOT_HTTP_ADDR = 'http://192.168.43.1:8080/'  #variable
 CODE_DIR = "./TeamCode/src/main/java/org/firstinspires/ftc/teamcode/"
 
 FILE_LIST_PATH = "java/file/tree"
@@ -38,17 +39,19 @@ def get_files_to_remove(code_dir_path: str, remote_src: list):
 def delete_file(robot_url: str, remote_path: str):
     target = "java/file/delete"
     print(f'Deleting: src{remote_path} via {robot_url+target}')
-    payload={'delete': '["src/org/firstinspires/ftc/teamcode/Autonomous1BSC.java"]'}
-    r = requests.post(robot_url+target, data=json.dumps(payload))
+    payload={'delete': f'["src{remote_path}"]'}
+    r = requests.post(robot_url+target, data=payload)
     print(r.request.body)
     return r.text
 
 
 def upload_file(robot_url: str, local_path: str):
     target = "java/file/upload"
-    with open(local_path) as f:
+    with open(local_path, 'rb') as f:
         print(f'Uploading: {local_path} via {robot_url+target}')
-        r = requests.post(robot_url+target, data={"file": f})
+        files = {"file": (local_path.split('/')[-1], f, 'application/octet-stream')}
+        print(files)
+        r = requests.post(robot_url+target, files=files)
     return r.text
 
 
