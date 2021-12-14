@@ -71,7 +71,7 @@ public class Autonomous1 extends LinearOpMode {
         try {
             TimeUnit.MILLISECONDS.sleep(ms);
         } catch (InterruptedException ie) {
-            System.out.println(ie);
+            RobotLog.e(ie.getMessage());
         }
     }
 
@@ -100,10 +100,14 @@ public class Autonomous1 extends LinearOpMode {
 
     void prepareRobot() {
         // Lift arm to prevent dragging (wait, no)
-        // armVert.setTargetPosition(50);
-        // armVert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        // armVert.setPower(0.2);
+        armVert.setTargetPosition(50);
+        armVert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armVert.setPower(0.2);
         claw.setPosition(1.0d);
+    }
+
+    void postPrepare() {
+        armVert.setTargetPosition(0);
     }
     
     void shippingContainer() {
@@ -230,6 +234,7 @@ public class Autonomous1 extends LinearOpMode {
         if (opModeIsActive()) {
             runFromConfig();
         }
+        postPrepare();
         RobotLog.i("Autonomous complete. Idling.");
         while (opModeIsActive()) {
             telemetry.addData("Status", "Idle");

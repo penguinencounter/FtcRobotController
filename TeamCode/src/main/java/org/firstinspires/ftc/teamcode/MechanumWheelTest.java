@@ -69,25 +69,6 @@ public class MechanumWheelTest extends LinearOpMode {
     private Servo claw = null;
     private AndroidTextToSpeech tts;
     private MechanumWheelDriveAPI driveAPI;
-    private String[] memes = {
-            "meow",
-            "According to all known laws of aviation, there is no way that a bee should be able to fly",
-            "Ready",
-            "Ready",
-            "Initialized",
-            "Who let the dogs out",
-            "Are you? -Jayden",
-            "bleep!",
-            "hello!",
-            "Ready",
-            "Joe Mama",
-            "Hi I'm Vince with Slap Chop",
-            "Hi I'm Phil Swift with Flex Tape",
-            "That's a lot of damage!",
-            "start noises intensify",
-            "REEEE MILES IS PLAYING FORTNITE!",
-            "Ready or not, here we come!"
-    };
 
     @Override
     public void runOpMode() {
@@ -128,7 +109,7 @@ public class MechanumWheelTest extends LinearOpMode {
         driveAPI = new MechanumWheelDriveAPI(rearLeft, rearRight, frontLeft, frontRight);
         Random rand = new Random();
         // Wait for the game to start (driver presses PLAY)
-//        telemetry.speak(memes[rand.nextInt(memes.length)]);
+        telemetry.speak("begin teleop");
         waitForStart();
         runtime.reset();
         // run until the end of the match (driver presses STOP)

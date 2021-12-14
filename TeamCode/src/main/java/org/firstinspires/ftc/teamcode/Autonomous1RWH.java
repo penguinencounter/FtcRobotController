@@ -12,6 +12,7 @@ public class Autonomous1RWH extends Autonomous1 {
         prepareRobot();
         waitForStart();
         runFromConfig();
+        postPrepare();
         waitForStop();
     }
 }

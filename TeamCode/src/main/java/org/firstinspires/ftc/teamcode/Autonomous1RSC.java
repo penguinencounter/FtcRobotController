@@ -14,6 +14,7 @@ public class Autonomous1RSC extends Autonomous1 {
         prepareRobot();
         waitForStart();
         runFromConfig();
+        postPrepare();
         waitForStop();
     }
 }
