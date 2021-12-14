@@ -76,7 +76,6 @@ public class MechanumWheelTest extends LinearOpMode {
             "Ready",
             "Initialized",
             "Who let the dogs out",
-            "Remember to SMASH that uhm START button!",
             "Are you? -Jayden",
             "bleep!",
             "hello!",
@@ -129,7 +128,7 @@ public class MechanumWheelTest extends LinearOpMode {
         driveAPI = new MechanumWheelDriveAPI(rearLeft, rearRight, frontLeft, frontRight);
         Random rand = new Random();
         // Wait for the game to start (driver presses PLAY)
-        telemetry.speak(memes[rand.nextInt(memes.length)]);
+//        telemetry.speak(memes[rand.nextInt(memes.length)]);
         waitForStart();
         runtime.reset();
         // run until the end of the match (driver presses STOP)

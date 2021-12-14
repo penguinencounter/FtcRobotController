@@ -110,8 +110,12 @@ public class Autonomous1 extends LinearOpMode {
         switch (configAlliance) {
             case RED:
                 api.move(1, 1, 1, 1);
-                sleepMs(1400);
+                sleepMs(400);
                 api.move(-1, 1, -1, 1);
+                sleepMs(1000);
+                api.move(1, 1, 1, 1);
+                sleepMs(1000);
+                api.move(1, -1, 1, -1);
                 sleepMs(1000);
                 api.move(1, 1, 1, 1);
                 sleepMs(1000);
@@ -119,8 +123,12 @@ public class Autonomous1 extends LinearOpMode {
                 break;
             case BLUE:
                 api.move(1, 1, 1, 1);
-                sleepMs(1400);
+                sleepMs(400);
                 api.move(1, -1, 1, -1);
+                sleepMs(1000);
+                api.move(1, 1, 1, 1);
+                sleepMs(1000);
+                api.move(-1, 1, -1, 1);
                 sleepMs(1000);
                 api.move(1, 1, 1, 1);
                 sleepMs(1000);
@@ -133,7 +141,7 @@ public class Autonomous1 extends LinearOpMode {
         switch (configAlliance) {
             case RED:
                 api.move(1, 1, 1, 1);
-                sleepMs(1400);
+                sleepMs(400);
                 api.move(1, -1, 1, -1);
                 sleepMs(1000);
                 api.move(1, 1, 1, 1);
@@ -142,7 +150,7 @@ public class Autonomous1 extends LinearOpMode {
                 break;
             case BLUE:
                 api.move(1, 1, 1, 1);
-                sleepMs(1400);
+                sleepMs(400);
                 api.move(-1, 1, -1, 1);
                 sleepMs(1000);
                 api.move(1, 1, 1, 1);
