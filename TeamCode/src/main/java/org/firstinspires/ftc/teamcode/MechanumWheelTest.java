@@ -69,6 +69,7 @@ public class MechanumWheelTest extends LinearOpMode {
     private Servo claw = null;
     private AndroidTextToSpeech tts;
     private MechanumWheelDriveAPI driveAPI;
+    private boolean endgameWarned = false;
 
     @Override
     public void runOpMode() {
@@ -119,6 +120,10 @@ public class MechanumWheelTest extends LinearOpMode {
             double leftY = -gamepad1.left_stick_y;
             double leftX = gamepad1.left_stick_x * 1.1;
             double rightX = gamepad1.right_stick_x;
+            if (runtime.seconds() > 80 && !endgameWarned) {
+                endgameWarned = true;
+                telemetry.speak("Endgame soon. Proceed to duck.");
+            }
             if (gamepad1.b) {
                 driveAPI.power_scale = 0.25;
             } else {
@@ -183,6 +188,7 @@ public class MechanumWheelTest extends LinearOpMode {
             telemetry.addData("Arm Target Position", target_vpos);
             telemetry.addData("gp2-l-y", -gamepad2.left_stick_y);
             telemetry.addData("Servo Position", spos);
+            telemetry.addData("Internal Match Timer", "(%.1f)s", runtime.seconds());
             telemetry.addData("Speeds", "rearLeft (%.2f) rearRight (%.2f) frontLeft (%.2f) frontRight (%.2f)", output[0], output[1], output[2], output[3]);
             telemetry.update();
         }

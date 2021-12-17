@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @Autonomous(name="Autor1: blue left")
 public class Autonomous1BWH extends Autonomous1 {
@@ -9,8 +8,9 @@ public class Autonomous1BWH extends Autonomous1 {
         configAlliance = Autonomous1.Alliance.BLUE;
         configAutoTarget = Autonomous1.Targets.WAREHOUSE;
         prepareHardwareMapping();
-        prepareRobot();
+        prepareRobot1();
         waitForStart();
+        prepareRobot2();
         runFromConfig();
         postPrepare();
         waitForStop();
