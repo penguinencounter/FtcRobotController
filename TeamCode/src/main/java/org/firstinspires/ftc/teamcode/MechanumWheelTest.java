@@ -59,6 +59,7 @@ import java.util.Random;
 public class MechanumWheelTest extends LinearOpMode {
 
     // Declare OpMode members.
+    // Begin a timer.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor rearLeft = null;
     private DcMotor rearRight = null;
@@ -67,14 +68,11 @@ public class MechanumWheelTest extends LinearOpMode {
     private DcMotor duckSpinner = null;
     private DcMotor armVert = null;
     private Servo claw = null;
-    private AndroidTextToSpeech tts;
     private MechanumWheelDriveAPI driveAPI;
-    private boolean endgameWarned = false;
+    private boolean endgameWarned = false;     // You'll see.
 
     @Override
     public void runOpMode() {
-        tts = new AndroidTextToSpeech();
-        tts.initialize();
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
@@ -94,25 +92,26 @@ public class MechanumWheelTest extends LinearOpMode {
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
+        // (Reset encoder for arm)
         armVert.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rearLeft.setDirection(DcMotor.Direction.FORWARD);
         rearRight.setDirection(DcMotor.Direction.FORWARD);
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         rearLeft.setDirection(DcMotor.Direction.REVERSE);
         armVert.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        // armVert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armVert.setTargetPosition(0);
-        
+
+        // Close claw
         claw.setPosition(1.0d);
 
+        // Why not?
         duckSpinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         
         driveAPI = new MechanumWheelDriveAPI(rearLeft, rearRight, frontLeft, frontRight);
-        Random rand = new Random();
         // Wait for the game to start (driver presses PLAY)
         telemetry.speak("begin teleop");
         waitForStart();
-        runtime.reset();
+        runtime.reset();   // Start timer. Used later.
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
@@ -120,15 +119,17 @@ public class MechanumWheelTest extends LinearOpMode {
             double leftY = -gamepad1.left_stick_y;
             double leftX = gamepad1.left_stick_x * 1.1;
             double rightX = gamepad1.right_stick_x;
-            if (runtime.seconds() > 80 && !endgameWarned) {
+            if (runtime.seconds() > 80 && !endgameWarned) { // !endgameWarned makes it only run once
                 endgameWarned = true;
-                telemetry.speak("Endgame soon. Proceed to duck.");
+                telemetry.speak("Endgame soon. Proceed to duck.");   // Gentle reminder
             }
             if (gamepad1.b) {
-                driveAPI.power_scale = 0.25;
+                driveAPI.power_scale = 0.25; // Slow down
             } else {
-                driveAPI.power_scale = 1;
+                driveAPI.power_scale = 1;    // Speed back up
             }
+
+            // See MechanumWheelDriveAPI.java
             double[] output = driveAPI.convertInputsToPowers(leftX, leftY, rightX);
 
             // Send calculated power to wheels
@@ -140,39 +141,43 @@ public class MechanumWheelTest extends LinearOpMode {
             int[] positions = {20, 115, 300, 450};
 
             if (gamepad2.dpad_up) {
-                armVert.setTargetPosition(positions[3]);
+                armVert.setTargetPosition(positions[3]);   // Top
             }
             else if (gamepad2.dpad_right) {
-                armVert.setTargetPosition(positions[2]);
+                armVert.setTargetPosition(positions[2]);   // Mid-top
             }
             else if (gamepad2.dpad_left) {
-                armVert.setTargetPosition(positions[1]);
+                armVert.setTargetPosition(positions[1]);   // Mid-bottom
             }
             else if (gamepad2.dpad_down) {
-                armVert.setTargetPosition(positions[0]);
+                armVert.setTargetPosition(positions[0]);   // Bottom
             }
 
             if (-gamepad2.left_stick_y > 0.5) {
+                // Move up if you hold the stick up. Don't overextend
                 armVert.setTargetPosition(Math.min(armVert.getTargetPosition()+1, 450));
             }
             if (-gamepad2.left_stick_y < -0.5) {
+                // Move down if you hold the stick down. Don't overextend
                 armVert.setTargetPosition(Math.max(armVert.getTargetPosition()-1, 0));
             }
 
             if (gamepad2.left_bumper) {
-                telemetry.addData("LB", "CLOSED");
+                telemetry.addData("LB", "CLOSED"); // Close claw
                 claw.setPosition(1);
             }
             else if (gamepad2.right_bumper) {
-                telemetry.addData("RB", "OPEN");
+                telemetry.addData("RB", "OPEN"); // Open claw
                 claw.setPosition(0.5);
             }
 
+            // Spin ducks
             if (gamepad2.y) {
                 duckSpinner.setPower(-1);
             } else if (gamepad2.x) {
                 duckSpinner.setPower(1);
             } else {
+                // Stop if no buttons are pressed
                 duckSpinner.setPower(0);
             }
             

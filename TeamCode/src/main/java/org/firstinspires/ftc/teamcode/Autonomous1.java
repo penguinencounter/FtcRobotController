@@ -81,6 +81,7 @@ public class Autonomous1 extends LinearOpMode {
     }
 
     void prepareHardwareMapping() {
+        // Connect to devices
         expansion_Hub_1 = hardwareMap.get(Blinker.class, "Expansion Hub 1");
         expansion_Hub_2 = hardwareMap.get(Blinker.class, "Expansion Hub 2");
         duck_spinner = hardwareMap.get(DcMotor.class, "duck_spinner");
@@ -90,35 +91,50 @@ public class Autonomous1 extends LinearOpMode {
         rear_left = hardwareMap.get(DcMotor.class, "rear_left");
         rear_right = hardwareMap.get(DcMotor.class, "rear_right");
         armVert = hardwareMap.get(DcMotor.class, "arm_vert");
-        armVert.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         claw = hardwareMap.get(Servo.class, "claw");
-        bnimu = (BNO055IMU)imu;
+
+        // Reset encoder values
+        armVert.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        // Enable and configure imu
+        bnimu = (BNO055IMU)imu;   // wrong data type but ok
         BNO055IMU.Parameters imuparams = new BNO055IMU.Parameters();
         bnimu.initialize(imuparams);
+
+        // Configure motors
         rear_left.setDirection(DcMotor.Direction.FORWARD);
         rear_right.setDirection(DcMotor.Direction.FORWARD);
         front_left.setDirection(DcMotor.Direction.REVERSE);
         rear_left.setDirection(DcMotor.Direction.REVERSE);
-
+        // SEE MechanumWheelDriveAPI.java
         api = new MechanumWheelDriveAPI(rear_left, rear_right, front_left, front_right);
     }
 
     void prepareRobot1() {
+        // Close claw (Driver pressed INIT, not START yet)
         claw.setPosition(1.0d);
     }
 
     void prepareRobot2() {
-        // Lift arm to prevent dragging (wait, no)
+        // Lift arm to prevent dragging (Driver pressed START)
         armVert.setTargetPosition(115);
         armVert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armVert.setPower(0.2);
     }
 
     void postPrepare() {
+        // Drop arm to prepare for TeleOp
         armVert.setTargetPosition(0);
     }
     
     void shippingContainer() {
+        /*
+        1. Forward a little (clear wall)
+        2. Turn toward carousel
+        3. Forward until parallel with Shipping Container
+        4. Turn to shipping container
+        5. Move forward into shipping container
+         */
         switch (configAlliance) {
             case RED:
                 api.move(1, 1, 1, 1);
@@ -150,6 +166,13 @@ public class Autonomous1 extends LinearOpMode {
     }
 
     void warehouse() {
+        /*
+        1. Move forward a little (clear wall)
+        2. Turn towards warehouse
+        3. Barge into warehouse
+        4. Turn left (or right, alliance dependant)
+           to have the arm not get stuck on debris on the floor
+         */
         switch (configAlliance) {
             case RED:
                 api.move(1, 1, 1, 1);
@@ -177,6 +200,7 @@ public class Autonomous1 extends LinearOpMode {
     }
 
     public void runFromConfig() {
+        // Run Autonomous
         if (configAutoTarget == Targets.SHIPPING_CONTAINER) {
             shippingContainer();
         }
@@ -186,6 +210,7 @@ public class Autonomous1 extends LinearOpMode {
     }
 
     public void waitForStop() {
+        // Wait until the Autonomous mode is over to stop so we don't pre-emptively start TeleOp
         while (opModeIsActive()) {
             telemetry.addData("Status", "Idle");
             telemetry.addData("......", "Waiting for Stop");
@@ -195,6 +220,10 @@ public class Autonomous1 extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+
+        // !!! DON'T USE IN COMPETITION !!!
+        // (gamepad-based configuration code)
+
         prepareHardwareMapping();
         prepareRobot2();
         telemetry.addData("Status", "Initialized");
