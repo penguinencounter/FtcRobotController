@@ -71,68 +71,12 @@ public class Autonomous1 extends LinearOpMode {
     }
     public Targets configAutoTarget = Targets.SHIPPING_CONTAINER;
     public Alliance configAlliance = Alliance.RED;
-    private float lastHeading = 0;
-    private float currentHeading = 0;
-    public float targetHeading = 0;
-    public boolean targetActive = false;
-    private boolean stopFlag = false;
-    public static final double allowableError = 1;  // degrees
 
     private void sleepMs(long ms) {
         try {
             TimeUnit.MILLISECONDS.sleep(ms);
         } catch (InterruptedException ie) {
             RobotLog.e(ie.getMessage());
-        }
-    }
-
-    class SyncIMUHeadingThread extends Thread {
-        public SyncIMUHeadingThread() {
-            this.setName("SyncIMUHeadingThread");
-        }
-
-        @Override
-        public void run() {
-            while (!stopFlag) {
-                Orientation angles = bnimu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-                lastHeading = currentHeading;
-                currentHeading = angles.thirdAngle;
-                // infinite wrap
-                if (lastHeading > 330 && currentHeading < 30) {
-                    // assume positive wrap
-                    currentHeading += 360;
-                } else if (lastHeading < 30 && currentHeading > 330) {
-                    // assume negative wrap
-                    currentHeading -= 360;
-                }
-            }
-        }
-    }
-
-    void turnWithIMU() {
-        if (targetActive) {
-            if (Math.abs(targetHeading - currentHeading) > allowableError) {
-                // Turn right
-                if (targetHeading > currentHeading) {
-                    api.move(1, -1, 1, -1);
-                } else {
-                    api.move(-1, 1, -1, 1);
-                }
-            } else {
-                api.stopAll();
-                targetActive = false;
-            }
-        }
-    }
-
-    void turn(float degrees) {
-        targetHeading += degrees;
-        targetActive = true;
-    }
-
-    void idleTurn() {
-        while (targetActive) {
-            turnWithIMU();
         }
     }
 
@@ -161,8 +105,6 @@ public class Autonomous1 extends LinearOpMode {
 
     void prepareRobot1() {
         claw.setPosition(1.0d);
-        Thread syncThread = new SyncIMUHeadingThread();
-        syncThread.start();
     }
 
     void prepareRobot2() {
@@ -174,7 +116,6 @@ public class Autonomous1 extends LinearOpMode {
 
     void postPrepare() {
         armVert.setTargetPosition(0);
-        stopFlag = true;
     }
     
     void shippingContainer() {
@@ -248,7 +189,6 @@ public class Autonomous1 extends LinearOpMode {
         while (opModeIsActive()) {
             telemetry.addData("Status", "Idle");
             telemetry.addData("......", "Waiting for Stop");
-            telemetry.addData("Heading?", currentHeading);
             telemetry.update();
         }
     }
