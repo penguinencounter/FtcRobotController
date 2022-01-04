@@ -81,7 +81,7 @@ public class Autonomous1 extends LinearOpMode {
     }
 
     void prepareHardwareMapping() {
-        // Connect to devices
+        // Connect to devices        deviceName is the actual name on the hardware configuration
         expansion_Hub_1 = hardwareMap.get(Blinker.class, "Expansion Hub 1");
         expansion_Hub_2 = hardwareMap.get(Blinker.class, "Expansion Hub 2");
         duck_spinner = hardwareMap.get(DcMotor.class, "duck_spinner");
@@ -130,7 +130,7 @@ public class Autonomous1 extends LinearOpMode {
     void shippingContainer() {
         /*
         1. Forward a little (clear wall)
-        2. Turn toward carousel
+        2. Turn _toward_ carousel
         3. Forward until parallel with Shipping Container
         4. Turn to shipping container
         5. Move forward into shipping container
