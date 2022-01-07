@@ -117,14 +117,23 @@ public class Autonomous1 extends LinearOpMode {
 
     void prepareRobot2() {
         // Lift arm to prevent dragging (Driver pressed START)
-        armVert.setTargetPosition(115);
-        armVert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armVert.setPower(0.2);
+        if (configAutoTarget == Targets.WAREHOUSE) {
+            armVert.setTargetPosition(115);
+            armVert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            armVert.setPower(0.2);
+        }
     }
 
     void postPrepare() {
         // Drop arm to prepare for TeleOp
-        armVert.setTargetPosition(0);
+        if (configAutoTarget == Targets.WAREHOUSE) {
+            armVert.setTargetPosition(0);
+        }
+    }
+
+    void sendStepUpdate(int step) {
+        telemetry.addData("Step", step);
+        telemetry.update();
     }
     
     void shippingContainer() {
@@ -146,52 +155,74 @@ public class Autonomous1 extends LinearOpMode {
             8. Turn Left 45
         9. Move forward into shipping container
          */
-        int duckDirection = 1;
+        int duckDirection = -1;
         switch (configAlliance) {
             case RED:
                 api.move(1, 1, 1, 1);    // 1
-                sleepMs(400);
+                sendStepUpdate(1);
+                sleepMs(500);
                 api.move(-1, 1, -1, 1);  // 2
+                sendStepUpdate(2);
                 sleepMs(1000);
                 api.move(1, 1, 1, 1);    // 3
+                sendStepUpdate(3);
                 sleepMs(1000);
                 // DUCK SPINNER
                 api.move(1, -1, 1, -1);  // 4
-                sleepMs(500);
+                sendStepUpdate(4);
+                sleepMs(800);
                 api.move(1, -1, -1, 1);  // 5
-                sleepMs(250);
+                sendStepUpdate(5);
+                sleepMs(300);
                 api.stopAll();
                 duck_spinner.setPower(duckDirection);                        // 6
+                sendStepUpdate(6);
                 sleepMs(5000);
+                duck_spinner.setPower(0);
                 api.move(-1, 1, 1, -1);  // 7
-                sleepMs(250);
-                api.move(-1, 1, -1, 1);  // 8
+                sendStepUpdate(7);
+                sleepMs(300);
+                api.move(1, -1, 1, -1);  // 8
+                sendStepUpdate(8);
+                sleepMs(430);
                 // END DUCK SPINNER
                 api.move(1, 1, 1, 1);    // 9
+                sendStepUpdate(9);
                 sleepMs(800);
                 api.stopAll();
                 break;
             case BLUE:
-                duckDirection = -1;
+                duckDirection = 1;
                 api.move(1, 1, 1, 1);   // 1
-                sleepMs(400);
+                sendStepUpdate(1);
+                sleepMs(500);
                 api.move(1, -1, 1, -1); // 2
+                sendStepUpdate(2);
                 sleepMs(1000);
                 api.move(1, 1, 1, 1);   // 3
+                sendStepUpdate(3);
                 sleepMs(1000);
                 // DUCK SPINNER
                 api.move(-1, 1, -1, 1);  // 4
-                sleepMs(500);
+                sendStepUpdate(4);
+                sleepMs(800);
                 api.move(-1, 1, 1, -1);  // 5
-                sleepMs(250);
+                sendStepUpdate(5);
+                sleepMs(300);
                 api.stopAll();
                 duck_spinner.setPower(duckDirection);                        // 6
+                sendStepUpdate(6);
                 sleepMs(5000);
+                duck_spinner.setPower(0);
                 api.move(1, -1, -1, 1);  // 7
-                sleepMs(250);
-                api.move(1, -1, 1, -1);  // 8
+                sendStepUpdate(7);
+                sleepMs(300);
+                api.move(-1, 1, -1, 1);  // 8
+                sendStepUpdate(8);
+                sleepMs(430);
                 // END DUCK SPINNER
                 api.move(1, 1, 1, 1);    // 9
+                sendStepUpdate(9);
                 sleepMs(800);
                 api.stopAll();
                 break;
