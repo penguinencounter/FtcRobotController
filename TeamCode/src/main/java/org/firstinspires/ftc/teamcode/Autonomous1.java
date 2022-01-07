@@ -132,33 +132,66 @@ public class Autonomous1 extends LinearOpMode {
         1. Forward a little (clear wall)
         2. Turn _toward_ carousel
         3. Forward until parallel with Shipping Container
-        4. Turn to shipping container
-        5. Move forward into shipping container
+        ~~ NEW RED:
+            4. Turn Right 45
+            5. Strafe Left
+            6. Spin Duck 5s
+            7. Strafe Right
+            8. Turn Right 45
+        ~~ NEW BLUE:
+            4. Turn Left 45
+            5. Strafe Right
+            6. Spin Duck 5s
+            7. Strafe Left
+            8. Turn Left 45
+        9. Move forward into shipping container
          */
+        int duckDirection = 1;
         switch (configAlliance) {
             case RED:
-                api.move(1, 1, 1, 1);
+                api.move(1, 1, 1, 1);    // 1
                 sleepMs(400);
-                api.move(-1, 1, -1, 1);
+                api.move(-1, 1, -1, 1);  // 2
                 sleepMs(1000);
-                api.move(1, 1, 1, 1);
+                api.move(1, 1, 1, 1);    // 3
                 sleepMs(1000);
-                api.move(1, -1, 1, -1);
-                sleepMs(1000);
-                api.move(1, 1, 1, 1);
+                // DUCK SPINNER
+                api.move(1, -1, 1, -1);  // 4
+                sleepMs(500);
+                api.move(1, -1, -1, 1);  // 5
+                sleepMs(250);
+                api.stopAll();
+                duck_spinner.setPower(duckDirection);                        // 6
+                sleepMs(5000);
+                api.move(-1, 1, 1, -1);  // 7
+                sleepMs(250);
+                api.move(-1, 1, -1, 1);  // 8
+                // END DUCK SPINNER
+                api.move(1, 1, 1, 1);    // 9
                 sleepMs(800);
                 api.stopAll();
                 break;
             case BLUE:
-                api.move(1, 1, 1, 1);
+                duckDirection = -1;
+                api.move(1, 1, 1, 1);   // 1
                 sleepMs(400);
-                api.move(1, -1, 1, -1);
+                api.move(1, -1, 1, -1); // 2
                 sleepMs(1000);
-                api.move(1, 1, 1, 1);
+                api.move(1, 1, 1, 1);   // 3
                 sleepMs(1000);
-                api.move(-1, 1, -1, 1);
-                sleepMs(1000);
-                api.move(1, 1, 1, 1);
+                // DUCK SPINNER
+                api.move(-1, 1, -1, 1);  // 4
+                sleepMs(500);
+                api.move(-1, 1, 1, -1);  // 5
+                sleepMs(250);
+                api.stopAll();
+                duck_spinner.setPower(duckDirection);                        // 6
+                sleepMs(5000);
+                api.move(1, -1, -1, 1);  // 7
+                sleepMs(250);
+                api.move(1, -1, 1, -1);  // 8
+                // END DUCK SPINNER
+                api.move(1, 1, 1, 1);    // 9
                 sleepMs(800);
                 api.stopAll();
                 break;
