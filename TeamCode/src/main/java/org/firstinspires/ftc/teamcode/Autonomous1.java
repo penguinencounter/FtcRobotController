@@ -168,26 +168,29 @@ public class Autonomous1 extends LinearOpMode {
                 sendStepUpdate(3);
                 sleepMs(1000);
                 // DUCK SPINNER
-                api.move(1, -1, 1, -1);  // 4
-                sendStepUpdate(4);
-                sleepMs(800);
-                api.move(1, -1, -1, 1);  // 5
-                sendStepUpdate(5);
-                sleepMs(400);
-                api.stopAll();
-                duck_spinner.setPower(duckDirection);                        // 6
-                sendStepUpdate(6);
-                sleepMs(5000);
-                duck_spinner.setPower(0);
-                api.move(-1, 1, 1, -1);  // 7
-                sendStepUpdate(7);
-                sleepMs(300);
-                api.move(1, -1, 1, -1);  // 8
-                sendStepUpdate(8);
-                sleepMs(430);
+//                api.move(1, -1, 1, -1);  // 4
+//                sendStepUpdate(4);
+//                sleepMs(800);
+//                api.move(1, -1, -1, 1);  // 5
+//                sendStepUpdate(5);
+//                sleepMs(400);
+//                api.stopAll();
+//                duck_spinner.setPower(duckDirection);                        // 6
+//                sendStepUpdate(6);
+//                sleepMs(5000);
+//                duck_spinner.setPower(0);
+//                api.move(-1, 1, 1, -1);  // 7
+//                sendStepUpdate(7);
+//                sleepMs(300);
+//                api.move(1, -1, 1, -1);  // 8
+//                sendStepUpdate(8);
+//                sleepMs(430);
                 // END DUCK SPINNER
+                api.move(1, -1, 1, -1);
+                sendStepUpdate(4);
+                sleepMs(1000);
                 api.move(1, 1, 1, 1);    // 9
-                sendStepUpdate(9);
+                sendStepUpdate(5);
                 sleepMs(800);
                 api.stopAll();
                 break;
@@ -203,26 +206,29 @@ public class Autonomous1 extends LinearOpMode {
                 sendStepUpdate(3);
                 sleepMs(1100);
                 // DUCK SPINNER
-                api.move(1, -1, 1, -1);  // 4
-                sendStepUpdate(4);
-                sleepMs(1500);
-                api.move(1, -1, -1, 1);  // 5
-                sendStepUpdate(5);
-                sleepMs(500);
-                api.stopAll();
-                duck_spinner.setPower(duckDirection);                        // 6
-                sendStepUpdate(6);
-                sleepMs(5000);
-                duck_spinner.setPower(0);
-                api.move(-1, 1, 1, -1);  // 7
-                sendStepUpdate(7);
-                sleepMs(100);
-                api.move(1, -1, 1, -1);  // 8
-                sendStepUpdate(8);
-                sleepMs(1000);
+//                api.move(1, -1, 1, -1);  // 4
+//                sendStepUpdate(4);
+//                sleepMs(1500);
+//                api.move(1, -1, -1, 1);  // 5
+//                sendStepUpdate(5);
+//                sleepMs(500);
+//                api.stopAll();
+//                duck_spinner.setPower(duckDirection);                        // 6
+//                sendStepUpdate(6);
+//                sleepMs(5000);
+//                duck_spinner.setPower(0);
+//                api.move(-1, 1, 1, -1);  // 7
+//                sendStepUpdate(7);
+//                sleepMs(100);
+//                api.move(1, -1, 1, -1);  // 8
+//                sendStepUpdate(8);
+//                sleepMs(1000);
                 // END DUCK SPINNER
+                api.move(-1, 1, -1, 1);
+                sendStepUpdate(4);
+                sleepMs(1000);
                 api.move(1, 1, 1, 1);    // 9
-                sendStepUpdate(9);
+                sendStepUpdate(5);
                 sleepMs(800);
                 api.stopAll();
                 break;
