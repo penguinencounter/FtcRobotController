@@ -138,7 +138,7 @@ public class MechanumWheelTest extends LinearOpMode {
             rearRight.setPower(output[2]);
             frontRight.setPower(output[3]);
             
-            int[] positions = {20, 115, 300, 450};
+            int[] positions = {0, 115, 300, 440};
 
             if (gamepad2.dpad_up) {
                 armVert.setTargetPosition(positions[3]);   // Top
