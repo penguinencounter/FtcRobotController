@@ -219,7 +219,7 @@ public class Autonomous1 extends LinearOpMode {
                 sleepMs(100);
                 api.move(1, -1, 1, -1);  // 8
                 sendStepUpdate(8);
-                sleepMs(1000);
+                sleepMs(800);
                 // END DUCK SPINNER
                 api.move(1, 1, 1, 1);    // 9
                 sendStepUpdate(9);
