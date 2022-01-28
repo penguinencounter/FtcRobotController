@@ -191,7 +191,22 @@ public class Autonomous1 extends LinearOpMode {
                 sleepMs(1000);
                 api.move(1, 1, 1, 1);    // 9
                 sendStepUpdate(5);
-                sleepMs(800);
+                sleepMs(400);
+                api.stopAll();
+                duck_spinner.setPower(duckDirection);                        // 6
+                sendStepUpdate(6);
+                sleepMs(5000);
+                duck_spinner.setPower(0);
+                api.move(-1, 1, 1, -1);  // 7
+                sendStepUpdate(7);
+                sleepMs(200);
+                api.move(1, -1, 1, -1);  // 8
+                sendStepUpdate(8);
+                sleepMs(270);
+                // END DUCK SPINNER
+                api.move(1, 1, 1, 1);    // 9
+                sendStepUpdate(9);
+                sleepMs(900);
                 api.stopAll();
                 break;
             case BLUE:
@@ -226,10 +241,25 @@ public class Autonomous1 extends LinearOpMode {
                 // END DUCK SPINNER
                 api.move(-1, 1, -1, 1);
                 sendStepUpdate(4);
-                sleepMs(1000);
-                api.move(1, 1, 1, 1);    // 9
+                sleepMs(1500);
+                api.move(0.5, -0.5, -0.5, 0.5);  // 5
                 sendStepUpdate(5);
-                sleepMs(800);
+                sleepMs(1000);
+                api.stopAll();
+                duck_spinner.setPower(duckDirection);                        // 6
+                sendStepUpdate(6);
+                sleepMs(5000);
+                duck_spinner.setPower(0);
+                api.move(-1, 1, 1, -1);  // 7
+                sendStepUpdate(7);
+                sleepMs(100);
+                api.move(1, -1, 1, -1);  // 8
+                sendStepUpdate(8);
+                sleepMs(1200);
+                // END DUCK SPINNER
+                api.move(1, 1, 1, 1);    // 9
+                sendStepUpdate(9);
+                sleepMs(900);
                 api.stopAll();
                 break;
         }
