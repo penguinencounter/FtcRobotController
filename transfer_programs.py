@@ -2,8 +2,8 @@ import requests
 import json
 import os
 import re
+from hashlib import sha256
 import time
-
 # ROBOT_HTTP_ADDR = 'http://'+input('Enter IP and Port for Robot Controller Console: ')+'/'
 ROBOT_HTTP_ADDR = 'http://192.168.43.1:8080/'  #variable
 CODE_DIR = "./TeamCode/src/main/java/org/firstinspires/ftc/teamcode/"
@@ -54,6 +54,13 @@ def upload_file(robot_url: str, local_path: str):
         r = requests.post(robot_url+target, files=files)
     return r.text
 
+def get_hash(target_file: str):
+    actual = CODE_DIR + target_file
+    with open(actual, 'rb') as f:
+        d = f.read()
+    hash = sha256(d).hexdigest()
+    return hash
+
 
 if __name__ == "__main__":
     print('Connecting and downloading file list...')
@@ -73,7 +80,9 @@ if __name__ == "__main__":
             print(' '*50, end='')
         print('     ', end='')
         if x < len(transfer):
-            print(transfer[x].ljust(50))
+            h = get_hash(transfer[x])
+            tf = f'{transfer[x]} ({h})'
+            print(tf.ljust(50))
         else:
             print(' '*50)
     input("Press enter to continue with transfer...")
@@ -81,5 +90,8 @@ if __name__ == "__main__":
         print(delete_file(ROBOT_HTTP_ADDR, file))
     for file in transfer:
         print(upload_file(ROBOT_HTTP_ADDR, CODE_DIR+file))
-    print("Doneso")
+    print("Done:")
+    for file in transfer:
+        print(f'  Uploaded {file} @ {get_hash(file)}')
+    print(time.asctime())
     
