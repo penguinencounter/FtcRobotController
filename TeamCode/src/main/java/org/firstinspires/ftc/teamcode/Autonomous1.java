@@ -160,7 +160,7 @@ public class Autonomous1 extends LinearOpMode {
             case RED:
                 api.move(1, 1, 1, 1);    // 1
                 sendStepUpdate(1);
-                sleepMs(500);
+                sleepMs(200);
                 api.move(-1, 1, -1, 1);  // 2
                 sendStepUpdate(2);
                 sleepMs(800);
@@ -170,7 +170,7 @@ public class Autonomous1 extends LinearOpMode {
                 // DUCK SPINNER
                 api.move(1, -1, 1, -1);  // 4
                 sendStepUpdate(4);
-                sleepMs(800);
+                sleepMs(600);
                 api.move(1, -1, -1, 1);  // 5
                 sendStepUpdate(5);
                 sleepMs(400);
@@ -184,7 +184,7 @@ public class Autonomous1 extends LinearOpMode {
                 sleepMs(200);
                 api.move(1, -1, 1, -1);  // 8
                 sendStepUpdate(8);
-                sleepMs(270);
+                sleepMs(230);
                 // END DUCK SPINNER
                 api.move(1, 1, 1, 1);    // 9
                 sendStepUpdate(9);
@@ -192,10 +192,10 @@ public class Autonomous1 extends LinearOpMode {
                 api.stopAll();
                 break;
             case BLUE:
-                duckDirection = -1;
+                duckDirection = 1;
                 api.move(1, 1, 1, 1);   // 1
                 sendStepUpdate(1);
-                sleepMs(500);
+                sleepMs(200);
                 api.move(1, -1, 1, -1); // 2
                 sendStepUpdate(2);
                 sleepMs(800);
