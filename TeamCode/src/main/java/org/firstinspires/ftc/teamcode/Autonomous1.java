@@ -163,7 +163,7 @@ public class Autonomous1 extends LinearOpMode {
                 sleepMs(500);
                 api.move(-1, 1, -1, 1);  // 2
                 sendStepUpdate(2);
-                sleepMs(1000);
+                sleepMs(800);
                 api.move(1, 1, 1, 1);    // 3
                 sendStepUpdate(3);
                 sleepMs(1000);
@@ -198,7 +198,7 @@ public class Autonomous1 extends LinearOpMode {
                 sleepMs(500);
                 api.move(1, -1, 1, -1); // 2
                 sendStepUpdate(2);
-                sleepMs(1000);
+                sleepMs(800);
                 api.move(1, 1, 1, 1);   // 3
                 sendStepUpdate(3);
                 sleepMs(1100);
