@@ -12,7 +12,7 @@ public class IMUtest extends LinearOpMode {
     @Override
     public void runOpMode() {
         Gyroscope imu = hardwareMap.get(Gyroscope.class, "imu");
-        imutools = new IMUtools(imu);
+        imutools = IMUtools.convert(imu);
         waitForStart();
         while (opModeIsActive()) {
             Orientation o = imutools.retrieveOrientation();
