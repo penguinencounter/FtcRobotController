@@ -27,10 +27,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.RobotLog;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.StaticFields.*;
 
 import java.util.concurrent.TimeUnit;
 
@@ -63,12 +60,7 @@ public class Autonomous1 extends LinearOpMode {
     private BNO055IMU bnimu;
     private DcMotor armVert;
     private Servo claw;
-    public enum Alliance {
-        BLUE, RED
-    }
-    public enum Targets {
-        SHIPPING_CONTAINER, WAREHOUSE
-    }
+
     public Targets configAutoTarget = Targets.SHIPPING_CONTAINER;
     public Alliance configAlliance = Alliance.RED;
 
