@@ -11,13 +11,7 @@ public class Autonomous0 extends LinearOpMode {
     public Alliance allianceConfig;
     public Targets targetConfig;
 
-    private DcMotor front_left;
-    private DcMotor front_right;
-    private DcMotor rear_left;
-    private DcMotor rear_right;
     private DcMotor arm_vert;
-
-    private Servo claw;
 
     private MechanumWheelDriveAPI api;
 
@@ -26,12 +20,12 @@ public class Autonomous0 extends LinearOpMode {
     }
 
     public void setupHardware() {
-        front_left = hardwareMap.get(DcMotor.class, "front_left");
-        front_right = hardwareMap.get(DcMotor.class, "front_right");
-        rear_left = hardwareMap.get(DcMotor.class, "rear_left");
-        rear_right = hardwareMap.get(DcMotor.class, "rear_right");
+        DcMotor front_left = hardwareMap.get(DcMotor.class, "front_left");
+        DcMotor front_right = hardwareMap.get(DcMotor.class, "front_right");
+        DcMotor rear_left = hardwareMap.get(DcMotor.class, "rear_left");
+        DcMotor rear_right = hardwareMap.get(DcMotor.class, "rear_right");
         arm_vert = hardwareMap.get(DcMotor.class, "arm_vert");
-        claw = hardwareMap.get(Servo.class, "claw");
+        Servo claw = hardwareMap.get(Servo.class, "claw");
 
         rear_left.setDirection(DcMotor.Direction.FORWARD);
         rear_right.setDirection(DcMotor.Direction.FORWARD);
@@ -53,24 +47,26 @@ public class Autonomous0 extends LinearOpMode {
                 // arm up
                 arm_vert.setTargetPosition(90);
                 api.move(1, 1, 1, 1);
-                waitMS(200);
-                api.move(1, -1, -1, 1);
+                waitMS(1400);
+                api.move(-1, 1, -1, 1);
                 waitMS(1000);
                 api.move(1, 1, 1, 1);
-                waitMS(800);
+                waitMS(1000);
                 api.stopAll();
                 arm_vert.setTargetPosition(0);
+                break;
             case BLUE:
                 // arm up
                 arm_vert.setTargetPosition(90);
                 api.move(1, 1, 1, 1);
-                waitMS(200);
-                api.move(-1, 1, 1, -1);
+                waitMS(1400);
+                api.move(1, -1, 1, -1);
                 waitMS(1000);
                 api.move(1, 1, 1, 1);
-                waitMS(800);
+                waitMS(1000);
                 api.stopAll();
                 arm_vert.setTargetPosition(0);
+                break;
         }
     }
 
