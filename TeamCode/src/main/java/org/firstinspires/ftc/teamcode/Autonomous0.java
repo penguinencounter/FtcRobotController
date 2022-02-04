@@ -52,19 +52,23 @@ public class Autonomous0 extends LinearOpMode {
             case RED:
                 // arm up
                 arm_vert.setTargetPosition(90);
+                api.move(1, 1, 1, 1);
+                waitMS(200);
                 api.move(1, -1, -1, 1);
                 waitMS(1000);
                 api.move(1, 1, 1, 1);
-                waitMS(1000);
+                waitMS(800);
                 api.stopAll();
                 arm_vert.setTargetPosition(0);
             case BLUE:
                 // arm up
                 arm_vert.setTargetPosition(90);
+                api.move(1, 1, 1, 1);
+                waitMS(200);
                 api.move(-1, 1, 1, -1);
                 waitMS(1000);
                 api.move(1, 1, 1, 1);
-                waitMS(1000);
+                waitMS(800);
                 api.stopAll();
                 arm_vert.setTargetPosition(0);
         }
