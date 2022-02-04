@@ -1,12 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
+@Disabled
 @Autonomous(name="Autor1: red left")
 public class Autonomous1RSC extends Autonomous1 {
     @Override
     public void runOpMode() {
-        configAlliance = Autonomous1.Alliance.RED;
-        configAutoTarget = Autonomous1.Targets.SHIPPING_CONTAINER;
+        configAlliance = StaticFields.Alliance.RED;
+        configAutoTarget = StaticFields.Targets.SHIPPING_CONTAINER;
         prepareHardwareMapping();
         prepareRobot1();
         waitForStart();

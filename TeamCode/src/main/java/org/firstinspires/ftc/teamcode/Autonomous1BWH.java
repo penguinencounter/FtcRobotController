@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 public class Autonomous1BWH extends Autonomous1 {
     @Override
     public void runOpMode() {
-        configAlliance = Autonomous1.Alliance.BLUE;
-        configAutoTarget = Autonomous1.Targets.WAREHOUSE;
+        configAlliance = StaticFields.Alliance.BLUE;
+        configAutoTarget = StaticFields.Targets.WAREHOUSE;
         prepareHardwareMapping();
         prepareRobot1();
         waitForStart();
